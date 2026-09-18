@@ -606,6 +606,54 @@ jobs:
             echo "CONFIG_DVB_USB_RTL28XXU=y"              # ✓ NEW
             echo "CONFIG_DVB_USB_DVBSKY=y"                # ✓ NEW
             echo "CONFIG_DVB_USB_MXL111SF=y"              # ✓ NEW
+
+            # --- MAC80211 extras ---
+            echo "CONFIG_MAC80211_MESH=m"
+            echo "CONFIG_MAC80211_LEDS=m"
+
+            # --- USB Ethernet ---
+            echo "CONFIG_USB_RTL8150=y"
+            echo "CONFIG_USB_RTL8152=y"
+
+            # --- Bluetooth extras ---
+            echo "CONFIG_BT_HCIBCM203X=y"
+            echo "CONFIG_BT_HCIBPA10X=y"
+            echo "CONFIG_BT_HCIBFUSB=y"
+            echo "CONFIG_BT_HCIVHCI=y"
+
+            # --- Ralink extra ---
+            echo "CONFIG_RT2500USB=y"
+
+            # --- RTW88 debug ---
+            echo "CONFIG_RTW88_DEBUG=n"
+            echo "CONFIG_RTW88_DEBUGFS=n"
+
+            # --- SDR / RF ---
+            echo "CONFIG_MEDIA_DIGITAL_TV_SUPPORT=y"
+            echo "CONFIG_MEDIA_SDR_SUPPORT=y"
+            echo "CONFIG_USB_AIRSPY=y"
+            echo "CONFIG_USB_HACKRF=y"
+            echo "CONFIG_USB_MSI2500=y"
+            echo "CONFIG_MEDIA_SUBDRV_AUTOSELECT=n"
+            echo "CONFIG_DVB_RTL2830=y"
+            echo "CONFIG_DVB_RTL2832=y"
+            echo "CONFIG_DVB_RTL2832_SDR=y"
+            echo "CONFIG_DVB_SI2168=y"
+            echo "CONFIG_DVB_ZD1301_DEMOD=y"
+
+            # --- USB ConfigFS extras ---
+            echo "CONFIG_USB_CONFIGFS_SERIAL=y"
+            echo "CONFIG_USB_CONFIGFS_OBEX=y"
+            echo "CONFIG_USB_CONFIGFS_NCM=y"
+            echo "CONFIG_USB_CONFIGFS_ECM=y"
+            echo "CONFIG_USB_CONFIGFS_ECM_SUBSET=y"
+            echo "CONFIG_USB_CONFIGFS_EEM=y"
+
+            # --- NFS extras ---
+            echo "CONFIG_NETWORK_FILESYSTEMS=y"
+            echo "CONFIG_NFS_V2=y"
+            echo "CONFIG_NFSD_V3=y"
+            echo "CONFIG_NFSD_V4=y"
           } >> gki_defconfig
 
       - name: Apply NetHunter WiFi injection patches
@@ -721,6 +769,19 @@ jobs:
             echo "CONFIG_TMPFS_XATTR=y"
           } >> gki_defconfig
 
+      - name: Update GKI modules list (fix modules out of date)
+        working-directory: kernel_workspace
+        run: |
+          set -euo pipefail
+          MODULES_ORDER="out/android12-5.10/common/modules.order"
+          if [ -f "$MODULES_ORDER" ]; then
+            cp "$MODULES_ORDER" common/android/gki_aarch64_modules
+            echo "Updated gki_aarch64_modules from $MODULES_ORDER"
+            wc -l common/android/gki_aarch64_modules
+          else
+            echo "::warning::$MODULES_ORDER not found — building anyway"
+          fi
+
       - name: Clean dirty flag
         working-directory: kernel_workspace
         run: |
@@ -796,9 +857,152 @@ jobs:
           cd ak3
           zip -r9 -q "../${{ github.event.inputs.device_name }}-Blaze-android12-5.10-susfs${SUSFS_COMMIT:0:8}.zip" . -x ".git*"
 
+      - name: Generate NetHunter Wireless Magisk Module (all .ko files)
+        working-directory: kernel_workspace
+        run: |
+          set -euo pipefail
+          mkdir -p wireless_module/system/lib/modules
+          mkdir -p wireless_module/META-INF/com/google/android
+
+          # Saari .ko files dhoondo jo build hui hain
+          KO_COUNT=0
+          find out/android12-5.10/common -name "*.ko" -print0 | while IFS= read -r -d '' ko; do
+            cp "$ko" wireless_module/system/lib/modules/
+            KO_COUNT=$((KO_COUNT + 1))
+          done
+
+          COUNT=$(find wireless_module/system/lib/modules -name "*.ko" | wc -l)
+          echo "Packaging ${COUNT} .ko modules into Magisk module"
+
+          # List them for the log
+          find wireless_module/system/lib/modules -name "*.ko" -printf "%f\n" | sort > /tmp/ko_list.txt
+          cat /tmp/ko_list.txt
+
+          cat << 'EOF' > wireless_module/module.prop
+          id=Wireless-firmware
+          name=Wireless NetHunter Drivers & Firmware
+          version=v1
+          versionCode=1
+          author=Blaze
+          description=NetHunter Wireless Drivers (all .ko files)
+          EOF
+
+          cat << 'EOF' > wireless_module/service.sh
+          #!/system/bin/sh
+          sleep 25
+          LOG=/data/local/tmp/nethunter_wireless.log
+          MODDIR=/data/adb/modules/Wireless-firmware/system/lib/modules
+
+          echo "===== $(date) =====" >> $LOG
+          echo /vendor/firmware > /sys/module/firmware_class/parameters/path 2>>$LOG
+
+          load(){
+            MOD="$1"
+            if [ -f "$MODDIR/$MOD.ko" ]; then
+              echo "Loading $MOD" >> $LOG
+              insmod "$MODDIR/$MOD.ko" >>$LOG 2>&1
+            else
+              echo "$MOD missing" >> $LOG
+            fi
+          }
+
+          # ============================================================
+          # Load all .ko files found in the module
+          # Note: cfg80211/mac80211 may already be loaded by vendor.
+          # If they conflict, comment them out here.
+          # ============================================================
+
+          # Core WiFi
+          load cfg80211
+          load mac80211
+
+          # Atheros
+          load ath
+          load ath9k_hw
+          load ath9k_common
+          load ath9k_htc
+          load carl9170
+          load ath6kl_core
+          load ath6kl_usb
+
+          # Ralink
+          load rt2x00lib
+          load rt2x00usb
+          load rt2800lib
+          load rt2800usb
+          load rt73usb
+
+          # Realtek
+          load rtl8187
+          load rtl8192cu
+          load rtl8xxxu
+          load rtl8192c-common
+          load rtl8723-common
+          load rtlwifi
+          load rtl_usb
+          load rtl_pci
+          load rtl8188ee
+          load rtl8192ee
+          load rtl8723ae
+          load rtl8723be
+          load rtl8821ae
+
+          # MediaTek
+          load mt7601u
+          load mt76
+          load mt76-usb
+          load mt76x0-common
+          load mt76x0u
+          load mt76x2-common
+          load mt76x2u
+
+          # Zydas
+          load zd1211rw
+          load zd1201
+
+          # Bluetooth
+          load hci_uart
+          load btusb
+          load btbcm
+          load btintel
+          load btrtl
+          load btqca
+
+          # Crypto
+          load crc-itu-t
+          load michael_mic
+          load eeprom_93cx6
+
+          # RNDIS
+          load rndis_wlan
+
+          dmesg | grep -i -E "cfg80211|mac80211|ath|rt2x00|rt2800|rtl|mt76|firmware" >> $LOG 2>&1
+          echo "Wireless modules finished" >> $LOG
+          EOF
+          chmod +x wireless_module/service.sh
+
+          cat << 'EOF' > wireless_module/META-INF/com/google/android/update-binary
+          #!/sbin/sh
+          OUTFD=$2
+          ZIPFILE=$3
+          mount /data 2>/dev/null
+          unzip -o "$ZIPFILE" 'system/*' -d /data/adb/modules/Wireless-firmware/ 2>/dev/null
+          cp -rf service.sh /data/adb/modules/Wireless-firmware/
+          cp -rf module.prop /data/adb/modules/Wireless-firmware/
+          touch /data/adb/modules/Wireless-firmware/update
+          exit 0
+          EOF
+          chmod +x wireless_module/META-INF/com/google/android/update-binary
+
+          cd wireless_module
+          zip -r9 -q "../Wireless_Nethunter_Firmware.zip" .
+          echo "Magisk module created: Wireless_Nethunter_Firmware.zip"
+          unzip -l ../Wireless_Nethunter_Firmware.zip | head -30
+
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
           name: ${{ github.event.inputs.device_name }}-build
-          path: "*.zip"
+          path: |
+            *.zip
           retention-days: 14
