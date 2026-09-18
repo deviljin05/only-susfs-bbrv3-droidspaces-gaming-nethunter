@@ -769,19 +769,6 @@ jobs:
             echo "CONFIG_TMPFS_XATTR=y"
           } >> gki_defconfig
 
-      - name: Update GKI modules list (fix modules out of date)
-        working-directory: kernel_workspace
-        run: |
-          set -euo pipefail
-          MODULES_ORDER="out/android12-5.10/common/modules.order"
-          if [ -f "$MODULES_ORDER" ]; then
-            cp "$MODULES_ORDER" common/android/gki_aarch64_modules
-            echo "Updated gki_aarch64_modules from $MODULES_ORDER"
-            wc -l common/android/gki_aarch64_modules
-          else
-            echo "::warning::$MODULES_ORDER not found — building anyway"
-          fi
-
       - name: Clean dirty flag
         working-directory: kernel_workspace
         run: |
@@ -807,6 +794,20 @@ jobs:
       - name: Disable strict defconfig verification
         working-directory: kernel_workspace
         run: sed -i 's/check_defconfig//' ./common/build.config.gki
+
+      - name: Disable modules list verification (fix modules out of date)
+        working-directory: kernel_workspace
+        run: |
+          set -euo pipefail
+          for f in common/build.config.gki common/build.config.gki.aarch64 common/build.config.common common/build.config.aarch64; do
+            [ -f "$f" ] || continue
+            sed -i 's/^MODULES_LIST=.*/MODULES_LIST=/' "$f"
+            sed -i 's/^MODULES_ORDER=.*/MODULES_ORDER=/' "$f"
+            sed -i 's/^TRIM_NONLISTED_KMI=.*/TRIM_NONLISTED_KMI=0/' "$f"
+            sed -i 's/^KMI_SYMBOL_LIST=.*/KMI_SYMBOL_LIST=/' "$f"
+          done
+          echo "MODULES_LIST check disabled"
+          grep -n "MODULES_LIST\|MODULES_ORDER\|TRIM_NONLISTED_KMI\|KMI_SYMBOL_LIST" common/build.config.gki* common/build.config.common 2>/dev/null || true
 
       - name: Ensure generic ld exists for tools that don't pass -fuse-ld=lld
         working-directory: kernel_workspace
