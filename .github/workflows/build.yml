@@ -359,133 +359,11 @@ jobs:
           cd kernel_workspace/common/arch/arm64/configs
           {
             # ============================================================
-            # WiFi core (NetHunter)
-            # ============================================================
-            echo "CONFIG_CFG80211=m"                      # ✓ NEW
-            echo "CONFIG_CFG80211_INTERNAL_REGDB=y"       # ✓ NEW
-            echo "CONFIG_MAC80211=m"                      # ✓ NEW
-            echo "CONFIG_MAC80211_HAS_RC=y"               # ✓ NEW
-            echo "CONFIG_MAC80211_RC_MINSTREL=y"          # ✓ NEW
-            echo "CONFIG_MAC80211_RC_DEFAULT_MINSTREL=y" # ✓ NEW
-
-            # ============================================================
             # NetHunter core
             # ============================================================
             echo "CONFIG_PACKET_DIAG=y"                   # ✓ NEW
             echo "CONFIG_USB_G_HID=y"                     # ✓ NEW
             echo "CONFIG_USB_CONFIGFS_F_HID=y"            # ✓ NEW
-
-            # ============================================================
-            # Atheros (AR9271, AR7010)
-            # ============================================================
-            echo "CONFIG_WLAN_VENDOR_ATH=y"               # ✓ NEW
-            echo "CONFIG_ATH9K_HTC=m"                     # ✓ NEW
-            echo "CONFIG_ATH9K_HTC_DEBUGFS=y"             # ✓ NEW
-            echo "CONFIG_ATH_CARDS=m"                     # ✓ NEW
-            echo "CONFIG_CARL9170=m"                      # ✓ NEW
-            echo "CONFIG_ATH6KL=m"                        # ✓ NEW
-            echo "CONFIG_ATH6KL_SDIO=m"                   # ✓ NEW
-            echo "CONFIG_ATH6KL_USB=m"                    # ✓ NEW
-            echo "CONFIG_ATH10K=m"                        # ✓ NEW
-            echo "CONFIG_ATH10K_USB=m"                    # ✓ NEW
-
-            # ============================================================
-            # Ralink / RT2800 (RT3070, RT5370, RT5572)
-            # ============================================================
-            echo "CONFIG_WLAN_VENDOR_RALINK=y"            # ✓ NEW
-            echo "CONFIG_RT2X00=m"                        # ✓ NEW
-            echo "CONFIG_RT2X00_LIB=m"                    # ✓ NEW
-            echo "CONFIG_RT2X00_LIB_USB=m"                # ✓ NEW
-            echo "CONFIG_RT2X00_LIB_MMIO=m"               # ✓ NEW
-            echo "CONFIG_RT2800USB=m"                     # ✓ NEW
-            echo "CONFIG_RT2800USB_RT33XX=y"              # ✓ NEW
-            echo "CONFIG_RT2800USB_RT35XX=y"              # ✓ NEW
-            echo "CONFIG_RT2800USB_RT3573=y"              # ✓ NEW
-            echo "CONFIG_RT2800USB_RT53XX=y"              # ✓ NEW
-            echo "CONFIG_RT2800USB_RT55XX=y"              # ✓ NEW
-            echo "CONFIG_RT2800USB_UNKNOWN=y"             # ✓ NEW
-            echo "CONFIG_RT2800PCI=m"                     # ✓ NEW
-            echo "CONFIG_RT2800_LIB=m"                    # ✓ NEW
-            echo "CONFIG_RT73USB=m"                       # ✓ NEW
-
-            # ============================================================
-            # Realtek (RTL8188, RTL8192, RTL8811, RTL8812, RTL8814, RTL8821)
-            # ============================================================
-            echo "CONFIG_WLAN_VENDOR_REALTEK=y"           # ✓ NEW
-            echo "CONFIG_RTL8187=m"                       # ✓ NEW
-            echo "CONFIG_RTL8187_LEDS=y"                  # ✓ NEW
-            echo "CONFIG_RTL8192CU=m"                     # ✓ NEW
-            echo "CONFIG_RTL8XXXU=m"                      # ✓ NEW
-            echo "CONFIG_RTL8XXXU_UNTESTED=y"             # ✓ NEW
-            echo "CONFIG_RTLWIFI=m"                       # ✓ NEW
-            echo "CONFIG_RTLWIFI_USB=m"                   # ✓ NEW
-            echo "CONFIG_RTL8192C_COMMON=m"               # ✓ NEW
-            echo "CONFIG_RTL8723_COMMON=m"                # ✓ NEW
-            echo "CONFIG_RTLBTCOEXIST=m"                  # ✓ NEW
-            echo "CONFIG_RTL8821AE=m"                     # ✓ NEW
-            echo "CONFIG_RTL8188EE=m"                     # ✓ NEW
-            echo "CONFIG_RTL8192EE=m"                     # ✓ NEW
-            echo "CONFIG_RTL8723BE=m"                     # ✓ NEW
-            echo "CONFIG_RTL8723AE=m"                     # ✓ NEW
-            echo "CONFIG_RTL8188EUS=m"                    # ✓ NEW
-
-            # ============================================================
-            # Realtek RTW88 (modern in-kernel)
-            # ============================================================
-            echo "CONFIG_RTW88=m"                         # ✓ NEW
-            echo "CONFIG_RTW88_CORE=m"                    # ✓ NEW
-            echo "CONFIG_RTW88_USB=m"                     # ✓ NEW
-            echo "CONFIG_RTW88_PCI=m"                     # ✓ NEW
-            echo "CONFIG_RTW88_8822BU=m"                  # ✓ NEW
-            echo "CONFIG_RTW88_8822CU=m"                  # ✓ NEW
-            echo "CONFIG_RTW88_8723DU=m"                  # ✓ NEW
-            echo "CONFIG_RTW88_8821CU=m"                  # ✓ NEW
-
-            # ============================================================
-            # MediaTek (MT7601U, MT7610U, MT7612U)
-            # ============================================================
-            echo "CONFIG_WLAN_VENDOR_MEDIATEK=y"          # ✓ NEW
-            echo "CONFIG_MT7601U=m"                       # ✓ NEW
-            echo "CONFIG_MT76_CORE=m"                     # ✓ NEW
-            echo "CONFIG_MT76_USB=m"                      # ✓ NEW
-            echo "CONFIG_MT76x0_COMMON=m"                 # ✓ NEW
-            echo "CONFIG_MT76x0U=m"                       # ✓ NEW
-            echo "CONFIG_MT76x2_COMMON=m"                 # ✓ NEW
-            echo "CONFIG_MT76x2U=m"                       # ✓ NEW
-            echo "CONFIG_MT7603E=m"                       # ✓ NEW
-            echo "CONFIG_MT7615_COMMON=m"                 # ✓ NEW
-            echo "CONFIG_MT7615E=m"                       # ✓ NEW
-
-            # ============================================================
-            # Zydas (ZD1211)
-            # ============================================================
-            echo "CONFIG_WLAN_VENDOR_ZYDAS=y"             # ✓ NEW
-            echo "CONFIG_ZD1211RW=m"                      # ✓ NEW
-            echo "CONFIG_USB_ZD1201=m"                    # ✓ NEW
-
-            # ============================================================
-            # Intel
-            # ============================================================
-            echo "CONFIG_WLAN_VENDOR_INTEL=y"             # ✓ NEW
-            echo "CONFIG_IWLWIFI=m"                       # ✓ NEW
-            echo "CONFIG_IWLMVM=m"                        # ✓ NEW
-
-            # ============================================================
-            # Broadcom
-            # ============================================================
-            echo "CONFIG_WLAN_VENDOR_BROADCOM=y"          # ✓ NEW
-            echo "CONFIG_BRCMFMAC=m"                      # ✓ NEW
-            echo "CONFIG_BRCMFMAC_USB=m"                  # ✓ NEW
-            echo "CONFIG_BRCMFMAC_PCIE=m"                 # ✓ NEW
-
-            # ============================================================
-            # Marvell
-            # ============================================================
-            echo "CONFIG_WLAN_VENDOR_MARVELL=y"           # ✓ NEW
-            echo "CONFIG_MWIFIEX=m"                       # ✓ NEW
-            echo "CONFIG_MWIFIEX_USB=m"                   # ✓ NEW
-            echo "CONFIG_MWIFIEX_SDIO=m"                  # ✓ NEW
-            echo "CONFIG_MWIFIEX_PCIE=m"                  # ✓ NEW
 
             # ============================================================
             # Firmware + USB
@@ -526,19 +404,7 @@ jobs:
             # ============================================================
             echo "CONFIG_RFKILL=y"                        # ✓ NEW
             echo "CONFIG_RFKILL_LEDS=y"                   # ✓ NEW
-
-            # ============================================================
-            # Crypto for WEP/WPA
-            # ============================================================
-            echo "CONFIG_CRYPTO_ARC4=m"                   # ✓ NEW
-            echo "CONFIG_CRYPTO_ECB=m"                    # ✓ NEW
-            echo "CONFIG_CRYPTO_AES=y"                    # ✓ NEW
-            echo "CONFIG_CRYPTO_MICHAEL_MIC=m"            # ✓ NEW
-            echo "CONFIG_CRYPTO_CCMP=m"                   # ✓ NEW
-            echo "CONFIG_CRYPTO_TKIP=m"                   # ✓ NEW
-            echo "CONFIG_CRC_CCITT=m"                     # ✓ NEW
-            echo "CONFIG_CRC_ITU_T=m"                     # ✓ NEW
-
+            
             # ============================================================
             # Bluetooth Advanced (L2CAP, RFCOMM, BNEP)
             # ============================================================
@@ -548,11 +414,9 @@ jobs:
             echo "CONFIG_BT_RFCOMM=y"                     # ✓ NEW
             echo "CONFIG_BT_BNEP=y"                       # ✓ NEW
             echo "CONFIG_BT_HIDP=y"                       # ✓ NEW
-            echo "CONFIG_BT_HCIUART=m"                    # ✓ NEW
             echo "CONFIG_BT_HCIUART_H4=y"                 # ✓ NEW
             echo "CONFIG_BT_HCIUART_BCSP=y"               # ✓ NEW
             echo "CONFIG_BT_HCIUART_LL=y"                 # ✓ NEW
-            echo "CONFIG_BT_HCIBTUSB=m"                   # ✓ NEW
 
             # ============================================================
             # CAN (Controller Area Network) - NetHunter
@@ -596,58 +460,11 @@ jobs:
             # ============================================================
             echo "CONFIG_WIREGUARD=y"                     # ✓ NEW
 
-            # ============================================================
-            # SDR / RF (HackRF, Airspy, RTL-SDR)
-            # ============================================================
-            echo "CONFIG_MEDIA_SUPPORT=y"                 # ✓ NEW
-            echo "CONFIG_MEDIA_USB_SUPPORT=y"             # ✓ NEW
-            echo "CONFIG_USB_VIDEO_CLASS=y"               # ✓ NEW
-            echo "CONFIG_DVB_USB=y"                       # ✓ NEW
-            echo "CONFIG_DVB_USB_RTL28XXU=y"              # ✓ NEW
-            echo "CONFIG_DVB_USB_DVBSKY=y"                # ✓ NEW
-            echo "CONFIG_DVB_USB_MXL111SF=y"              # ✓ NEW
-
-            # --- MAC80211 extras ---
-            echo "CONFIG_MAC80211_MESH=m"
-            echo "CONFIG_MAC80211_LEDS=m"
-
-            # --- USB Ethernet ---
-            echo "CONFIG_USB_RTL8150=y"
-            echo "CONFIG_USB_RTL8152=y"
-
             # --- Bluetooth extras ---
             echo "CONFIG_BT_HCIBCM203X=y"
             echo "CONFIG_BT_HCIBPA10X=y"
             echo "CONFIG_BT_HCIBFUSB=y"
             echo "CONFIG_BT_HCIVHCI=y"
-
-            # --- Ralink extra ---
-            echo "CONFIG_RT2500USB=y"
-
-            # --- RTW88 debug ---
-            echo "CONFIG_RTW88_DEBUG=n"
-            echo "CONFIG_RTW88_DEBUGFS=n"
-
-            # --- SDR / RF ---
-            echo "CONFIG_MEDIA_DIGITAL_TV_SUPPORT=y"
-            echo "CONFIG_MEDIA_SDR_SUPPORT=y"
-            echo "CONFIG_USB_AIRSPY=y"
-            echo "CONFIG_USB_HACKRF=y"
-            echo "CONFIG_USB_MSI2500=y"
-            echo "CONFIG_MEDIA_SUBDRV_AUTOSELECT=n"
-            echo "CONFIG_DVB_RTL2830=y"
-            echo "CONFIG_DVB_RTL2832=y"
-            echo "CONFIG_DVB_RTL2832_SDR=y"
-            echo "CONFIG_DVB_SI2168=y"
-            echo "CONFIG_DVB_ZD1301_DEMOD=y"
-
-            # --- USB ConfigFS extras ---
-            echo "CONFIG_USB_CONFIGFS_SERIAL=y"
-            echo "CONFIG_USB_CONFIGFS_OBEX=y"
-            echo "CONFIG_USB_CONFIGFS_NCM=y"
-            echo "CONFIG_USB_CONFIGFS_ECM=y"
-            echo "CONFIG_USB_CONFIGFS_ECM_SUBSET=y"
-            echo "CONFIG_USB_CONFIGFS_EEM=y"
 
             # --- NFS extras ---
             echo "CONFIG_NETWORK_FILESYSTEMS=y"
@@ -655,51 +472,6 @@ jobs:
             echo "CONFIG_NFSD_V3=y"
             echo "CONFIG_NFSD_V4=y"
           } >> gki_defconfig
-
-      - name: Apply NetHunter WiFi injection patches
-        working-directory: kernel_workspace/common
-        run: |
-          set -euo pipefail
-          python3 - <<'PYEOF'
-          import pathlib
-
-          def patch(path, old, new, label):
-              p = pathlib.Path(path)
-              if not p.exists():
-                  print(f"[skip] {label}: {path} not found")
-                  return
-              text = p.read_text()
-              n = text.count(old)
-              if n != 1:
-                  print(f"[WARN] {label}: expected 1 match, found {n} — skipping")
-                  return
-              p.write_text(text.replace(old, new, 1))
-              print(f"[ok] {label}")
-
-          # 1) mac80211: injected packet seqno + NO_ACK
-          patch(
-              "net/mac80211/tx.c",
-              "\t/*\n\t * Packet injection may want to control the sequence\n\t * number, if we have no matching interface then we\n\t * neither assign one ourselves nor ask the driver to.\n\t */\n\tif (unlikely(info->control.vif->type == NL80211_IFTYPE_MONITOR))\n\t\treturn TX_CONTINUE;\n",
-              "\t/*\n\t * Packet injection may want to control the sequence\n\t * number, so if an injected packet is found, skip\n\t * renumbering it. Also make the packet NO_ACK to avoid\n\t * excessive retries (ACKing and retrying should be\n\t * handled by the injecting application).\n\t */\n\tif (unlikely((info->flags & IEEE80211_TX_CTL_INJECTED) &&\n\t   !(tx->sdata->u.mntr.flags & MONITOR_FLAG_COOK_FRAMES))) {\n\t\tif (!ieee80211_has_morefrags(hdr->frame_control))\n\t\t\tinfo->flags |= IEEE80211_TX_CTL_NO_ACK;\n\t\treturn TX_CONTINUE;\n\t}\n",
-              "mac80211 injected packet seqno/NO_ACK",
-          )
-
-          # 2) mac80211: skip QoS header in monitor mode
-          patch(
-              "net/mac80211/tx.c",
-              "\tieee80211_set_qos_hdr(sdata, skb);\n\tieee80211_tx(sdata, sta, skb, false);\n",
-              "        // Don't overwrite QoS header in monitor mode\n        if (likely(info->control.vif->type != NL80211_IFTYPE_MONITOR)) {\n            ieee80211_set_qos_hdr(sdata, skb);\n        }\n\tieee80211_tx(sdata, sta, skb, false);\n",
-              "mac80211 skip QoS hdr in monitor mode",
-          )
-
-          # 3) cfg80211: allow monitor channel change
-          patch(
-              "net/wireless/chan.c",
-              "\tif (!cfg80211_has_monitors_only(rdev))\n\t\treturn -EBUSY;\n",
-              "\t// Always allow user to change channel, even if there is another normal\n\t// virtual interface using the device.\n\t//if (!cfg80211_has_monitors_only(rdev))\n\t//\treturn -EBUSY;\n",
-              "cfg80211 monitor channel EBUSY removal",
-          )
-          PYEOF
 
       - name: Apply NTSync patches
         working-directory: kernel_workspace/common
@@ -859,148 +631,6 @@ jobs:
           cp "${{ env.IMG_PATH }}" ak3/Image
           cd ak3
           zip -r9 -q "../${{ github.event.inputs.device_name }}-Blaze-android12-5.10-susfs${SUSFS_COMMIT:0:8}.zip" . -x ".git*"
-
-      - name: Generate NetHunter Wireless Magisk Module (all .ko files)
-        working-directory: kernel_workspace
-        run: |
-          set -euo pipefail
-          mkdir -p wireless_module/system/lib/modules
-          mkdir -p wireless_module/META-INF/com/google/android
-
-          # Saari .ko files dhoondo jo build hui hain
-          KO_COUNT=0
-          find out/android12-5.10/common -name "*.ko" -print0 | while IFS= read -r -d '' ko; do
-            cp "$ko" wireless_module/system/lib/modules/
-            KO_COUNT=$((KO_COUNT + 1))
-          done
-
-          COUNT=$(find wireless_module/system/lib/modules -name "*.ko" | wc -l)
-          echo "Packaging ${COUNT} .ko modules into Magisk module"
-
-          # List them for the log
-          find wireless_module/system/lib/modules -name "*.ko" -printf "%f\n" | sort > /tmp/ko_list.txt
-          cat /tmp/ko_list.txt
-
-          cat << 'EOF' > wireless_module/module.prop
-          id=Wireless-firmware
-          name=Wireless NetHunter Drivers & Firmware
-          version=v1
-          versionCode=1
-          author=Blaze
-          description=NetHunter Wireless Drivers (all .ko files)
-          EOF
-
-          cat << 'EOF' > wireless_module/service.sh
-          #!/system/bin/sh
-          sleep 25
-          LOG=/data/local/tmp/nethunter_wireless.log
-          MODDIR=/data/adb/modules/Wireless-firmware/system/lib/modules
-
-          echo "===== $(date) =====" >> $LOG
-          echo /vendor/firmware > /sys/module/firmware_class/parameters/path 2>>$LOG
-
-          load(){
-            MOD="$1"
-            if [ -f "$MODDIR/$MOD.ko" ]; then
-              echo "Loading $MOD" >> $LOG
-              insmod "$MODDIR/$MOD.ko" >>$LOG 2>&1
-            else
-              echo "$MOD missing" >> $LOG
-            fi
-          }
-
-          # ============================================================
-          # Load all .ko files found in the module
-          # Note: cfg80211/mac80211 may already be loaded by vendor.
-          # If they conflict, comment them out here.
-          # ============================================================
-
-          # Core WiFi
-          load cfg80211
-          load mac80211
-
-          # Atheros
-          load ath
-          load ath9k_hw
-          load ath9k_common
-          load ath9k_htc
-          load carl9170
-          load ath6kl_core
-          load ath6kl_usb
-
-          # Ralink
-          load rt2x00lib
-          load rt2x00usb
-          load rt2800lib
-          load rt2800usb
-          load rt73usb
-
-          # Realtek
-          load rtl8187
-          load rtl8192cu
-          load rtl8xxxu
-          load rtl8192c-common
-          load rtl8723-common
-          load rtlwifi
-          load rtl_usb
-          load rtl_pci
-          load rtl8188ee
-          load rtl8192ee
-          load rtl8723ae
-          load rtl8723be
-          load rtl8821ae
-
-          # MediaTek
-          load mt7601u
-          load mt76
-          load mt76-usb
-          load mt76x0-common
-          load mt76x0u
-          load mt76x2-common
-          load mt76x2u
-
-          # Zydas
-          load zd1211rw
-          load zd1201
-
-          # Bluetooth
-          load hci_uart
-          load btusb
-          load btbcm
-          load btintel
-          load btrtl
-          load btqca
-
-          # Crypto
-          load crc-itu-t
-          load michael_mic
-          load eeprom_93cx6
-
-          # RNDIS
-          load rndis_wlan
-
-          dmesg | grep -i -E "cfg80211|mac80211|ath|rt2x00|rt2800|rtl|mt76|firmware" >> $LOG 2>&1
-          echo "Wireless modules finished" >> $LOG
-          EOF
-          chmod +x wireless_module/service.sh
-
-          cat << 'EOF' > wireless_module/META-INF/com/google/android/update-binary
-          #!/sbin/sh
-          OUTFD=$2
-          ZIPFILE=$3
-          mount /data 2>/dev/null
-          unzip -o "$ZIPFILE" 'system/*' -d /data/adb/modules/Wireless-firmware/ 2>/dev/null
-          cp -rf service.sh /data/adb/modules/Wireless-firmware/
-          cp -rf module.prop /data/adb/modules/Wireless-firmware/
-          touch /data/adb/modules/Wireless-firmware/update
-          exit 0
-          EOF
-          chmod +x wireless_module/META-INF/com/google/android/update-binary
-
-          cd wireless_module
-          zip -r9 -q "../Wireless_Nethunter_Firmware.zip" .
-          echo "Magisk module created: Wireless_Nethunter_Firmware.zip"
-          unzip -l ../Wireless_Nethunter_Firmware.zip | head -30
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
